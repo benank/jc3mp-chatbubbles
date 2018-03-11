@@ -1,0 +1,10 @@
+{
+    "name": "chatbubbles",
+    "author": "Lord Farquaad",
+    "version": "1.0.0",
+    "jcmp_dependencies":
+    [
+        "chat2",
+        "timechange"
+    ]
+}

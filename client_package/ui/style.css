@@ -1,0 +1,84 @@
+
+* 
+{
+	user-select: none;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 550px;
+    cursor: default;
+    font-size: 32px;
+}
+
+html
+{
+    visibility: hidden;
+    color: white;
+}
+
+div.container
+{
+    font-size: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 600px;
+    border: 2px solid white;
+    overflow: hidden;
+}
+
+div.container:empty {border: 0 solid white;}
+
+div.message
+{
+    font-size: 16px;
+    clear: both;
+    padding: 8px;
+    padding-top: 4px;
+    padding-bottom: 2px;
+    user-select: none;
+    word-wrap: break-word;
+    text-shadow: 1px 1px 1px black;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: auto;
+}
+
+div.message:hover
+{
+    cursor: default;
+}
+
+div.message.atted
+{
+    background-color: rgba(255, 255, 0, 0.5);
+    border-left: 8px solid yellow;
+}
+
+div.message:not(:first-of-type)
+{
+    border-top: 2px solid white;
+}
+
+span.player-name
+{
+    font-weight: bold;
+    border-radius: 3px;
+    cursor: default;
+    /*transition: background-color 0.2s linear, box-shadow 0.2s linear;*/
+}
+
+#tag
+{
+    display: inline-block;
+	position: relative;
+    bottom: 6px;
+	height: 100%;
+	width: max-content;
+	padding-left: 8px;
+	padding-right: 8px;
+    margin-right: 6px;
+	background-color: gray;
+	border-radius: 50px;
+	color: white;
+	text-align: center;
+	vertical-align: middle;
+}

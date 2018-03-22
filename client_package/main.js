@@ -73,13 +73,13 @@ jcmp.events.Add('Render', (r) =>
         if (!players[id]) {continue;} // If the player isn't nearby, don't render
         if (!jcmp.players[players[id].i]) {continue;} // If the player doesn't exist, don't render
 
-        const m = jcmp.players[players[id].i].GetBoneTransform(0xA1C96158, r.dtf).Translate(ui_data.up);
+        const m = jcmp.players[players[id].i].GetBoneTransform(0xA1C96158, r.dtf);
 
         const dist_to_cam = dist(m.position, cam_pos);
 
         if (dist_to_cam > max_dist) {continue;} // If it's not within range, don't render
 
-        const pos = r.WorldToScreen(m.position);
+        const pos = r.WorldToScreen(m.position.add(ui_data.up));
 
         // If it is off the screen, don't draw it
         if (pos.x == -1 && pos.y == -1) {continue;}

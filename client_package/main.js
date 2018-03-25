@@ -5,6 +5,17 @@ const bubbles = {}; // indexed by player network id - .ui .size
 const players = {};
 const names = [];
 
+jcmp.events.AddRemoteCallable('chatbubbles/remove', (id) => 
+{
+    if (bubbles[id])
+    {
+        bubbles[id].ui.Destroy();
+        delete bubbles[id];
+    }
+
+    if (players[id]) {delete players[id];}
+})
+
 jcmp.ui.AddEvent('SecondTick', (s) => 
 {
     // Refresh nearby players every second
@@ -15,13 +26,14 @@ jcmp.ui.AddEvent('SecondTick', (s) =>
     }
 })
 
+const up = new Vector3f(0, 0.5, 0);
+
 jcmp.events.AddRemoteCallable('chat_message', (obj, r, g, b) => 
 {
     const pid = (JSON.parse(obj)).pid;
 
     if (pid === undefined) // 
     {
-        //jcmp.print(`No pid was found, cannot create chatbubble.`)
         return;
     }
 
@@ -33,7 +45,6 @@ jcmp.events.AddRemoteCallable('chat_message', (obj, r, g, b) =>
 
     const ui_data = {};
     ui_data.ui_size = new Vector2f(0,0);
-    ui_data.up = new Vector3f(0, 0, 0);
     ui_data.ui = new WebUIWindow(
         `chatbubble_${pid}`, 
         `package://chatbubbles/ui/index.html`, 
@@ -73,13 +84,18 @@ jcmp.events.Add('Render', (r) =>
         if (!players[id]) {continue;} // If the player isn't nearby, don't render
         if (!jcmp.players[players[id].i]) {continue;} // If the player doesn't exist, don't render
 
-        const m = jcmp.players[players[id].i].GetBoneTransform(0xA1C96158, r.dtf);
+        const player = players[id].player;
 
-        const dist_to_cam = dist(m.position, cam_pos);
+        if (player.networkId != id) {continue;} // Ids don't match
+
+        const m = jcmp.players[players[id].i].GetBoneTransform(0xA1C96158, r.dtf);
+        const ui_pos = m.position.add(up);
+
+        const dist_to_cam = dist(ui_pos, cam_pos);
 
         if (dist_to_cam > max_dist) {continue;} // If it's not within range, don't render
 
-        const pos = r.WorldToScreen(m.position.add(ui_data.up));
+        const pos = r.WorldToScreen(ui_pos);
 
         // If it is off the screen, don't draw it
         if (pos.x == -1 && pos.y == -1) {continue;}
